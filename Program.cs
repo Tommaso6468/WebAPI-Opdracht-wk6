@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<PretparkContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<Gebruiker, IdentityRole>().AddEntityFrameworkStores<PretparkContext>().AddDefaultTokenProviders();
 builder.Services.AddAuthentication().AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -39,7 +39,7 @@ builder.Services.AddAuthentication().AddJwtBearer(opt =>
         ValidAudience = "https://localhost:7044",
         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh89awe98f89uawef9j8aw89hefawef"))
     };
-}); ;
+});
 
 var app = builder.Build();
 

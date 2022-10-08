@@ -4,7 +4,7 @@
 
 namespace Opdracht_wk6.Migrations
 {
-    public partial class _2 : Migration
+    public partial class _5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

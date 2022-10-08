@@ -5,26 +5,40 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-public class GebruikerMetWachwoord : IdentityUser
+public class GastMetWachtwoord : Gast
 {
     public string? Password { get; init; }
 }
+
+public class MedewerkerMetWachtwoord : Medewerker
+{
+    public string? Password { get; init; }
+}
+
 [Route("api/[controller]")]
 [ApiController]
 public class AccountController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<Gebruiker> _userManager;
+    private readonly SignInManager<Gebruiker> _signInManager;
 
-    public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public AccountController(UserManager<Gebruiker> userManager, SignInManager<Gebruiker> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
     }
 
     [HttpPost]
-    [Route("registreer")]
-    public async Task<ActionResult<IEnumerable<Gebruiker>>> Registreer([FromBody] GebruikerMetWachwoord gebruikerMetWachwoord)
+    [Route("registreer/gast")]
+    public async Task<ActionResult<IEnumerable<Gebruiker>>> RegistreerGast([FromBody] GastMetWachtwoord gebruikerMetWachwoord)
+    {
+        var resultaat = await _userManager.CreateAsync(gebruikerMetWachwoord, gebruikerMetWachwoord.Password);
+        return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);
+    }
+
+    [HttpPost]
+    [Route("registreer/medewerker")]
+    public async Task<ActionResult<IEnumerable<Gebruiker>>> RegistreerMedewerker([FromBody] MedewerkerMetWachtwoord gebruikerMetWachwoord)
     {
         var resultaat = await _userManager.CreateAsync(gebruikerMetWachwoord, gebruikerMetWachwoord.Password);
         return !resultaat.Succeeded ? new BadRequestObjectResult(resultaat) : StatusCode(201);

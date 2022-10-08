@@ -15,18 +15,20 @@ namespace Opdracht_wk6.Controllers
     public class GebruikerController : ControllerBase
     {
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<Gebruiker> _userManager;
+        private readonly SignInManager<Gebruiker> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public GebruikerController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public GebruikerController(UserManager<Gebruiker> userManager, SignInManager<Gebruiker> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         // GET: api/Gebruiker
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IdentityUser>>> GetGebruiker()
+        public async Task<ActionResult<IEnumerable<Gebruiker>>> GetGebruiker()
         {
             if (_userManager.Users == null)
             {
@@ -38,7 +40,7 @@ namespace Opdracht_wk6.Controllers
 
         // GET: api/Gebruiker/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IdentityUser>> GetGebruiker(string id)
+        public async Task<ActionResult<Gebruiker>> GetGebruiker(string id)
         {
             if (_userManager.Users == null)
             {
@@ -57,7 +59,7 @@ namespace Opdracht_wk6.Controllers
         // PUT: api/Gebruiker/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGebruiker(string id, IdentityUser identityUser)
+        public async Task<IActionResult> PutGebruiker(string id, Gebruiker identityUser)
         {
             if (id != identityUser.Id)
             {
@@ -89,7 +91,7 @@ namespace Opdracht_wk6.Controllers
         // POST: api/Gebruiker
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<IdentityUser>> PostGebruiker(IdentityUser identityUser)
+        public async Task<ActionResult<Gebruiker>> PostGebruiker(Gebruiker identityUser)
         {
             if (_userManager.Users == null)
             {
