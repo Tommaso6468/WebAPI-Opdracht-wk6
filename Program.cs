@@ -9,6 +9,29 @@ builder.Services.AddDbContext<PretparkContext>(options =>
     options.UseSqlite("Data Source=data.db"));
 
 // Add services to the container.
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("Admin",
+        authBuilder =>
+        {
+            authBuilder.RequireRole("Admin");
+        });
+});
+
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("Medewerker",
+        authBuilder =>
+        {
+            authBuilder.RequireRole("Medewerker");
+        });
+});
+
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("Gast",
+        authBuilder =>
+        {
+            authBuilder.RequireRole("Gast");
+        });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
