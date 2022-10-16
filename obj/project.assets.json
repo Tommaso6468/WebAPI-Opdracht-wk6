@@ -10379,31 +10379,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tommaso\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/home/tommaso/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Tommaso\\Documents\\GitHub\\Opdracht-wk6\\Opdracht-wk6.csproj",
+      "projectUniqueName": "/home/tommaso/Documents/GitHub/Opdracht-wk6/Opdracht-wk6.csproj",
       "projectName": "Opdracht-wk6",
-      "projectPath": "c:\\Users\\Tommaso\\Documents\\GitHub\\Opdracht-wk6\\Opdracht-wk6.csproj",
-      "packagesPath": "C:\\Users\\Tommaso\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Tommaso\\Documents\\GitHub\\Opdracht-wk6\\obj\\",
+      "projectPath": "/home/tommaso/Documents/GitHub/Opdracht-wk6/Opdracht-wk6.csproj",
+      "packagesPath": "/home/tommaso/.nuget/packages/",
+      "outputPath": "/home/tommaso/Documents/GitHub/Opdracht-wk6/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Tommaso\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/tommaso/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -10466,6 +10459,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.9, 6.0.9]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
+            "version": "[6.0.9, 6.0.9]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.9, 6.0.9]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -10474,7 +10481,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
       }
     }
   }

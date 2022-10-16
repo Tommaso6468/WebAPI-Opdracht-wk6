@@ -1,46 +1,66 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Authorize(Roles = "Gast", AuthenticationSchemes = "Bearer")]
+[Authorize(Policy = "Gast", AuthenticationSchemes = "Bearer")]
 [ApiController]
 [Route("api/[controller]")]
 public class LikeController : ControllerBase
 {
     private PretparkContext context;
+    private UserManager<Gebruiker> _userManager;
 
-    public LikeController(PretparkContext pretparkContext)
+    public LikeController(PretparkContext pretparkContext, UserManager<Gebruiker> userManager)
     {
         context = pretparkContext;
+        _userManager = userManager;
     }
 
     [HttpPost]
-    public async Task<ActionResult<Like>> PostLike(Like like)
+    public async Task<ActionResult<Like>> PostLike(string attractieNaam)
     {
-        if (await context.Likes.FirstOrDefaultAsync(l => l.gast == like.gast && l.attractie == like.attractie) != null)
+        Gebruiker user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+        if (user == null) return Problem("Gebruiker niet gevonden");
+
+        if (await context.Likes.FirstOrDefaultAsync(l => l.gast.Id == user.Id && l.attractie.Naam == attractieNaam) != null)
         {
             return Problem("Attractie al geliked");
         }
 
-        await context.Likes.AddAsync(like);
+        if (await context.Attracties.FirstOrDefaultAsync(a => a.Naam == attractieNaam) == null)
+        {
+            return Problem("Attractie niet gevonden");
+        }
 
-        return CreatedAtAction("GetLike", new { id = like.Id }, like);
+        var newLike = new Like { attractie = await context.Attracties.FirstOrDefaultAsync(a => a.Naam == attractieNaam), gast = user };
+
+        await context.Likes.AddAsync(newLike);
+        await context.SaveChangesAsync();
+
+        return CreatedAtAction("GetLike", new { id = newLike.Id }, newLike);
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteLike(Like like)
+    public async Task<IActionResult> DeleteLike(string attractieNaam)
     {
+        Gebruiker user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+        if (user == null) return Problem("Gebruiker niet gevonden");
+
         if (context.Likes == null)
         {
             return NotFound();
         }
-        var foundLike = await context.Likes.FirstOrDefaultAsync(l => l.Id == like.Id || (l.attractie == like.attractie && l.gast == like.gast));
+        var foundLike = await context.Likes.FirstOrDefaultAsync(l => l.attractie.Naam == attractieNaam && l.gast.Id == user.Id);
         if (foundLike == null)
         {
             return NotFound();
         }
 
         context.Likes.Remove(foundLike);
+        await context.SaveChangesAsync();
 
         return Ok();
     }

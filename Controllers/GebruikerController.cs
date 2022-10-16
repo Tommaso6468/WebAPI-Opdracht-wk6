@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Opdracht_wk6.Controllers
 {
-    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+    [Authorize(Policy = "Admin", AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class GebruikerController : ControllerBase

@@ -7,38 +7,38 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/[controller]")]
 public class AttractieController : ControllerBase
 {
-    private PretparkContext context;
+    private readonly PretparkContext _pretparkContext;
 
     public AttractieController(PretparkContext pretparkContext)
     {
-        context = pretparkContext;
+        _pretparkContext = pretparkContext;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Attractie>>> GetAttracties()
     {
-        if (context.Attracties == null)
+        if (_pretparkContext.Attracties == null)
         {
             return NotFound();
         }
-        return await context.Attracties.ToListAsync();
+        return await _pretparkContext.Attracties.ToListAsync();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<(Attractie, int)>> GetAttractie(int id)
     {
-        if (context.Attracties == null)
+        if (_pretparkContext.Attracties == null)
         {
             return NotFound();
         }
-        var attractie = await context.Attracties.FirstOrDefaultAsync(a => a.Id == id);
+        var attractie = await _pretparkContext.Attracties.FirstOrDefaultAsync(a => a.Id == id);
 
         if (attractie == null)
         {
             return NotFound();
         }
 
-        var likes = context.Likes.Select(a => a.Id == id).Count();
+        var likes = _pretparkContext.Likes.Select(a => a.Id == id).Count();
 
         return (attractie, likes);
     }
@@ -47,30 +47,32 @@ public class AttractieController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Attractie>> PostAttractie(Attractie attractie)
     {
-        if (context.Attracties == null)
+        if (_pretparkContext.Attracties == null)
         {
             return Problem("Entity set 'PretparkContext.Gebruiker'  is null.");
         }
-        await context.Attracties.AddAsync(attractie);
+        await _pretparkContext.Attracties.AddAsync(attractie);
+        await _pretparkContext.SaveChangesAsync();
 
         return CreatedAtAction("GetAttractie", new { id = attractie.Id }, attractie);
     }
 
-    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
+    [Authorize(Policy = "Admin", AuthenticationSchemes = "Bearer")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAttractie(int id)
     {
-        if (context.Attracties == null)
+        if (_pretparkContext.Attracties == null)
         {
             return NotFound();
         }
-        var attractie = await context.Attracties.FirstOrDefaultAsync(a => a.Id == id);
+        var attractie = await _pretparkContext.Attracties.FirstOrDefaultAsync(a => a.Id == id);
         if (attractie == null)
         {
             return NotFound();
         }
 
-        context.Attracties.Remove(attractie);
+        _pretparkContext.Attracties.Remove(attractie);
+        await _pretparkContext.SaveChangesAsync();
 
         return Ok();
     }
